@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <title>beyond | admin login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A corporate Bootstrap theme by Medium Rare">
+    <style>
+      @keyframes hideLoader{0%{ width: 100%; height: 100%; }100%{ width: 0; height: 0; }  }  body > div.loader{ position: fixed; background: white; width: 100%; height: 100%; z-index: 1071; opacity: 0; transition: opacity .5s ease; overflow: hidden; pointer-events: none; display: flex; align-items: center; justify-content: center;}body:not(.loaded) > div.loader{ opacity: 1;}body:not(.loaded){ overflow: hidden;}  body.loaded > div.loader{animation: hideLoader .5s linear .5s forwards;  } /* Typing Animation */.loading-animation {width: 6px;height: 6px;border-radius: 50%;animation: typing 1s linear infinite alternate;position: relative;left: -12px;}@keyframes typing {0% {background-color: rgba(100,100,100, 1);box-shadow: 12px 0px 0px 0px rgba(100,100,100, 0.2),24px 0px 0px 0px rgba(100,100,100, 0.2);}25% {background-color: rgba(100,100,100, 0.4);box-shadow: 12px 0px 0px 0px rgba(100,100,100, 2),24px 0px 0px 0px rgba(100,100,100, 0.2);}75% {background-color: rgba(100,100,100, 0.4);box-shadow: 12px 0px 0px 0px rgba(100,100,100, 0.2),24px 0px 0px 0px rgba(100,100,100, 1);}}
+    </style>
+    <script type="text/javascript">
+      window.addEventListener("load", function () {    document.querySelector('body').classList.add('loaded');  });
+    </script>
+    <link href="assets/css/theme.min.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="preload" as="font" href="assets/fonts/Inter-UI-upright.var.woff2" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" as="font" href="assets/fonts/Inter-UI.var.woff2" type="font/woff2" crossorigin="anonymous">
+    <link rel="shortcut icon" href="./images/beyond1.png">  
+  </head>
+
+  <body>
+    <div class="loader">
+      <div class="loading-animation"></div>
+    </div>
+
+    <section class="row no-gutters min-vh-100 p-0">
+      <div class="col-lg-4 bg-primary-3 d-flex justify-content-end">
+        <img src="assets/img/article-9.jpg" alt="Image" class="bg-image">
+        <div class="divider divider-vertical d-none d-lg-block">
+          <img src="assets/img/dividers/divider-vertical-1.svg" alt="graphical divider" data-inject-svg />
+        </div>
+      </div>
+      <div class="col px-5 position-relative d-flex align-items-center">
+        <div class="row justify-content-center w-100">
+          <div class="col-md-8 col-lg-7 col-xl-6">
+            <div class="text-center mb-4">
+              <img src="./images/beyond1.png" height ="50" width ="50" alt="Beyond" /> 
+              <h1 class="mb-1">Admin Login</h1>
+            </div>
+            <form class ="beyondAdminLoginForm">
+              <div class="form-group">
+                <input type="email" name="email" placeholder="Email Address" class="form-control form-control-lg">
+              </div>
+              <div class="form-group">
+                <input type="password" name="pwd" placeholder="Password" class="form-control form-control-lg">
+                <input type="hidden" name="action" value="login">
+                <small class="text-muted">Enter the password given to you by the admin</small>
+              </div>
+              <div class="form-group result_login"> </div>
+              <div class="form-group">
+                <button class="btn-block btn btn-primary btn-lg" type="submit">Sign in</button>
+              </div>
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="signup-agree">
+                <label class="custom-control-label text-small text-muted" for="signup-agree">
+                  I agree to the <a href="#">Terms &amp; Conditions</a>
+                </label>
+              </div>
+              <hr>
+              <div class="text-center text-small text-muted">
+                <span>Forgotten your password?<a href="mailto:support@beyond.com"> Contact support</a>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Required vendor scripts (Do not remove) -->
+    <script type="text/javascript" src="assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/js/popper.min.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap.js"></script>
+
+
+    <script type="text/javascript">
+     $(document).ready(function(){
+          let adminUrl = "http://localhost/works/beyond/api/admin/";
+          let $doc     = $(document); 
+          // Login Process
+          $doc.on("submit",".beyondAdminLoginForm",function(evt){
+              evt.preventDefault();
+              let formData = $(this).serialize();
+              $.ajax({
+                  url:adminUrl,
+                  data:formData,
+                  method:"post",
+                  beforeSend: function(){
+                      $(".result_login").html('...please wait');
+                  },
+                  success:function(res){
+                      if(res==1){
+                          $(".result_login").html('<div class ="alert alert-success">Success!</div>');
+                          setTimeout(function(){location.href = "./admin";},1000);
+                      }else{
+                          $(".result_login").html('<div class ="alert alert-danger">'+res+'</div>');
+                      }
+                  }
+              });
+          });
+      });
+    </script>
+
+  </body>
+
+</html>
